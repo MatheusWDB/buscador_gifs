@@ -15,26 +15,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? search;
   int offset = 0;
+  int page = 0;
 
   Future<Map> getGifs() async {
     http.Response response;
 
-    if (search == null) {
+    if (search == null || search!.isEmpty) {
       response = await http.get(Uri.parse(
-          'https://api.giphy.com/v1/gifs/trending?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&limit=20&offset=0&rating=g&bundle=messaging_non_clips'));
+          'https://api.giphy.com/v1/gifs/trending?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&limit=20&offset=$offset&rating=g&bundle=messaging_non_clips'));
     } else {
       response = await http.get(Uri.parse(
-          'https://api.giphy.com/v1/gifs/search?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&q=$search&limit=19&offset=$offset&rating=g&lang=pt&bundle=messaging_non_clips'));
+          'https://api.giphy.com/v1/gifs/search?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&q=$search&limit=20&offset=$offset&rating=g&lang=pt&bundle=messaging_non_clips'));
     }
     return json.decode(response.body);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getGifs().then((onValue) {
-      print(onValue);
-    });
   }
 
   @override
@@ -91,11 +84,10 @@ class _HomePageState extends State<HomePage> {
                     if (!snapshot.hasError) {
                       return CreateGifTable(
                         snapshot: snapshot,
-                        getCount: getCount,
                         search: search,
                         onTap: () {
                           setState(() {
-                            offset += 19;
+                            offset += 20;
                           });
                         },
                       );
@@ -105,16 +97,42 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                iconSize: 50,
+                color: Colors.white,
+                disabledColor: const Color.fromARGB(59, 255, 255, 255),
+                onPressed: page == 0
+                    ? null
+                    : () {
+                        setState(() {
+                          page -= 1;
+                          offset -= 20;
+                        });
+                      },
+                icon: Icon(Icons.arrow_left),
+              ),
+              Text(
+                '$page',
+                style: TextStyle(color: Colors.white),
+              ),
+              IconButton(
+                iconSize: 50,
+                color: Colors.white,
+                onPressed: () {
+                  setState(() {
+                    page += 1;
+                    offset += 20;
+                  });
+                },
+                icon: Icon(Icons.arrow_right),
+              )
+            ],
+          )
         ],
       ),
     );
-  }
-
-  int getCount(List data) {
-    if (search == null) {
-      return data.length;
-    }
-
-    return data.length + 1;
   }
 }

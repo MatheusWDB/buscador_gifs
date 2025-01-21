@@ -1,3 +1,4 @@
+import 'package:buscador_gifs/pages/gif_page.dart';
 import 'package:flutter/material.dart';
 
 class CreateGifTable extends StatelessWidget {
@@ -5,7 +6,8 @@ class CreateGifTable extends StatelessWidget {
     super.key,
     required this.snapshot,
     required this.getCount,
-    required this.search, required this.onTap,
+    required this.search,
+    required this.onTap,
   });
 
   final String? search;
@@ -31,6 +33,13 @@ class CreateGifTable extends StatelessWidget {
               height: 200.0,
               fit: BoxFit.cover,
             ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return GifPage(gif: snapshot.data['data'][index]);
+                },
+              ));
+            },
           );
         }
 

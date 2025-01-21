@@ -1,5 +1,6 @@
 import 'package:buscador_gifs/pages/gif_page.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CreateGifTable extends StatelessWidget {
   const CreateGifTable({
@@ -39,6 +40,10 @@ class CreateGifTable extends StatelessWidget {
                   return GifPage(gif: snapshot.data['data'][index]);
                 },
               ));
+            },
+            onLongPress: () {
+              Share.share(snapshot.data['data'][index]['images']['fixed_height']
+                  ['url']);
             },
           );
         }

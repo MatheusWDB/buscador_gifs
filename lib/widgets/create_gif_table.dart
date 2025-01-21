@@ -1,6 +1,7 @@
 import 'package:buscador_gifs/pages/gif_page.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CreateGifTable extends StatelessWidget {
   const CreateGifTable({
@@ -29,8 +30,10 @@ class CreateGifTable extends StatelessWidget {
       itemBuilder: (context, index) {
         if (search == null || index < snapshot.data['data'].length) {
           return GestureDetector(
-            child: Image.network(
-              snapshot.data['data'][index]['images']['fixed_height']['url'],
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: snapshot.data['data'][index]['images']['fixed_height']
+                  ['url'],
               height: 200.0,
               fit: BoxFit.cover,
             ),

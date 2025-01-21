@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           'https://api.giphy.com/v1/gifs/trending?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&limit=20&offset=0&rating=g&bundle=messaging_non_clips'));
     } else {
       response = await http.get(Uri.parse(
-          'https://api.giphy.com/v1/gifs/search?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&q=$search&limit=20&offset=$offset&rating=g&lang=pt&bundle=messaging_non_clips'));
+          'https://api.giphy.com/v1/gifs/search?api_key=CsprqEHK8d2IEGolVKilJHiuv7cma7eC&q=$search&limit=19&offset=$offset&rating=g&lang=pt&bundle=messaging_non_clips'));
     }
     return json.decode(response.body);
   }
@@ -62,6 +62,12 @@ class _HomePageState extends State<HomePage> {
                 fontSize: 18.0,
               ),
               textAlign: TextAlign.center,
+              onSubmitted: (value) {
+                setState(() {
+                  search = value;
+                  offset = 0;
+                });
+              },
             ),
           ),
           Flexible(
@@ -85,7 +91,13 @@ class _HomePageState extends State<HomePage> {
                     if (!snapshot.hasError) {
                       return CreateGifTable(
                         snapshot: snapshot,
-                        contextS: context,
+                        getCount: getCount,
+                        search: search,
+                        onTap: () {
+                          setState(() {
+                            offset += 19;
+                          });
+                        },
                       );
                     }
                     return Container();
@@ -96,5 +108,13 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  int getCount(List data) {
+    if (search == null) {
+      return data.length;
+    }
+
+    return data.length + 1;
   }
 }

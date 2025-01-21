@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:buscador_gifs/widgets/create_gif_table.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -30,7 +31,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getGifs().then((onValue) {
       print(onValue);
@@ -82,6 +82,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   default:
+                    if (!snapshot.hasError) {
+                      return CreateGifTable(
+                        snapshot: snapshot,
+                        contextS: context,
+                      );
+                    }
                     return Container();
                 }
               },

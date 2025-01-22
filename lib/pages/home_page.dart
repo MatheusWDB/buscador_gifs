@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               cursorColor: Colors.white,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Pesquisar',
                 labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18.0,
               ),
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
-                    return Center(
+                    return const Center(
                       child: SizedBox(
                         width: 100.0,
                         height: 100.0,
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text(
                           'Error: ${snapshot.data!['meta']['msg']}\nStatus: ${snapshot.data!['meta']['status']}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 28.0,
                           ),
@@ -119,11 +119,11 @@ class _HomePageState extends State<HomePage> {
                     : () {
                         updateVariables('decrement', search);
                       },
-                icon: Icon(Icons.arrow_left),
+                icon: const Icon(Icons.arrow_left),
               ),
               Text(
                 '$page',
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
               IconButton(
                 iconSize: 50,
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     : () {
                         updateVariables('increment', search);
                       },
-                icon: Icon(Icons.arrow_right),
+                icon: const Icon(Icons.arrow_right),
               )
             ],
           )

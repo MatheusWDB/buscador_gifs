@@ -12,17 +12,17 @@ class GifPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:  AppBar(
         title: Text(gif['title']),
-        titleTextStyle: TextStyle(fontSize: 16.0),
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.black,
+        titleTextStyle: const TextStyle(fontSize: 16.0),
+        foregroundColor:  Colors.white,
+        backgroundColor:  Colors.black,
         actions: [
           IconButton(
             onPressed: () {
               Share.share(gif['images']['fixed_height']['url']);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.share,
             ),
           ),

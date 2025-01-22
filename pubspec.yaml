@@ -37,15 +37,15 @@ dependencies:
   share_plus: ^10.1.4
   transparent_image: ^2.0.1
   http: ^1.3.0
-  flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.14.3
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: ""
+  image_path: "assets/icon/gif.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   adaptive_icon_background: "#FFFFFF"  # Use um código de cor hexadecimal para a cor de fundo
-  adaptive_icon_foreground: "" #"assets/icon/adaptive_foreground.png"
+  adaptive_icon_foreground: "assets/icon/gif.png" #"assets/icon/adaptive_foreground.png"
 
 dev_dependencies:
   flutter_test:

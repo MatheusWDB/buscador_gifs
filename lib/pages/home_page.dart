@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   String? search;
   int offset = 0;
   int page = 0;
+  bool error = false;
 
   Future<Map> getGifs() async {
     http.Response response;
@@ -45,10 +46,16 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              cursorColor: Colors.white,
               decoration: InputDecoration(
                 labelText: 'Pesquisar',
                 labelStyle: TextStyle(color: Colors.white),
                 border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
               ),
               style: TextStyle(
                 color: Colors.white,
@@ -56,11 +63,7 @@ class _HomePageState extends State<HomePage> {
               ),
               textAlign: TextAlign.center,
               onSubmitted: (value) {
-                setState(() {
-                  search = value;
-                  page = 0;
-                  offset = 0;
-                });
+                updateVariables(null, value);
               },
             ),
           ),
@@ -82,18 +85,24 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   default:
-                    if (!snapshot.hasError) {
-                      return CreateGifTable(
-                        snapshot: snapshot,
-                        search: search,
-                        onTap: () {
-                          setState(() {
-                            offset += 20;
-                          });
-                        },
+                    if (snapshot.hasError || snapshot.data?['data'].isEmpty) {
+                      error = true;
+                      return Center(
+                        child: Text(
+                          'Error: ${snapshot.data!['meta']['msg']}\nStatus: ${snapshot.data!['meta']['status']}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28.0,
+                          ),
+                        ),
                       );
                     }
-                    return Container();
+                    error == false;
+                    return CreateGifTable(
+                      snapshot: snapshot,
+                      search: search,
+                    );
                 }
               },
             ),
@@ -105,13 +114,10 @@ class _HomePageState extends State<HomePage> {
                 iconSize: 50,
                 color: Colors.white,
                 disabledColor: const Color.fromARGB(59, 255, 255, 255),
-                onPressed: page == 0
+                onPressed: page == 0 || error == true
                     ? null
                     : () {
-                        setState(() {
-                          page -= 1;
-                          offset -= 20;
-                        });
+                        updateVariables('decrement', search);
                       },
                 icon: Icon(Icons.arrow_left),
               ),
@@ -122,12 +128,12 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 iconSize: 50,
                 color: Colors.white,
-                onPressed: () {
-                  setState(() {
-                    page += 1;
-                    offset += 20;
-                  });
-                },
+                disabledColor: const Color.fromARGB(59, 255, 255, 255),
+                onPressed: error == true
+                    ? null
+                    : () {
+                        updateVariables('increment', search);
+                      },
                 icon: Icon(Icons.arrow_right),
               )
             ],
@@ -135,5 +141,26 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  void updateVariables(String? incrementOrDecrement, String? search) {
+    setState(() {
+      switch (incrementOrDecrement) {
+        case 'increment':
+          page++;
+          break;
+        case 'decrement':
+          page--;
+          break;
+        default:
+          page = 0;
+          break;
+      }
+
+      error == true ? page = 0 : null;
+
+      this.search = search;
+      offset = page * 20;
+    });
   }
 }
